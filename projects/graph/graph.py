@@ -2,6 +2,7 @@
 Simple graph implementation
 """
 from util import Stack, Queue  # These may come in handy
+import copy
 
 class Graph:
 
@@ -73,12 +74,33 @@ class Graph:
        
 
     def bfs(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing the shortest path from
-        starting_vertex to destination_vertex in
-        breath-first order.
-        """
-        pass  # TODO
+        line = Queue()
+        line.enqueue([starting_vertex])
+        paths = []
+        visited = []
+
+        while line.size() > 0:
+            current_path = line.dequeue()
+            current_node = current_path[-1]
+
+            if current_node not in visited:
+                visited.append(current_node)
+                neighbors = self.vertices[current_node]
+                for neighbor in neighbors:
+                    one_path = copy.deepcopy(current_path)                 
+                    one_path.append(neighbor)
+                    if neighbor == destination_vertex:
+                        paths.append(one_path)
+                    else:
+                        line.enqueue(one_path)
+
+        for x in range(0, len(paths)):
+            shortest = paths[0]
+            if len(paths[x]) < len(shortest):
+                shortest = paths[x]
+
+        return(shortest)
+
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -152,11 +174,11 @@ if __name__ == '__main__':
     graph.dft(1)
     graph.dft_recursive(1)
 
-    # '''
-    # Valid BFS path:
-    #     [1, 2, 4, 6]
-    # '''
-    # print(graph.bfs(1, 6))
+    '''
+    Valid BFS path:
+        [1, 2, 4, 6]
+    '''
+    print(graph.bfs(1, 6))
 
     # '''
     # Valid DFS paths:
