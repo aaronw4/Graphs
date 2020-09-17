@@ -42,11 +42,19 @@ class Graph:
 
     def dft(self, starting_vertex):
         line = Stack()
-        """
-        Print each vertex in depth-first order
-        beginning from starting_vertex.
-        """
-        pass  # TODO
+        line.push(starting_vertex)
+        visited = []
+
+        while line.size() > 0:
+            current_node = line.pop()
+            if current_node not in visited:
+                visited.append(current_node)
+                neighbors = self.vertices[current_node]
+                for neighbor in neighbors:
+                    line.push(neighbor)
+
+        print(visited)
+
 
     def dft_recursive(self, starting_vertex):
         """
@@ -127,14 +135,14 @@ if __name__ == '__main__':
     '''
     graph.bft(1)
 
-    # '''
-    # Valid DFT paths:
-    #     1, 2, 3, 5, 4, 6, 7
-    #     1, 2, 3, 5, 4, 7, 6
-    #     1, 2, 4, 7, 6, 3, 5
-    #     1, 2, 4, 6, 3, 5, 7
-    # '''
-    # graph.dft(1)
+    '''
+    Valid DFT paths:
+        1, 2, 3, 5, 4, 6, 7
+        1, 2, 3, 5, 4, 7, 6
+        1, 2, 4, 7, 6, 3, 5
+        1, 2, 4, 6, 3, 5, 7
+    '''
+    graph.dft(1)
     # graph.dft_recursive(1)
 
     # '''
