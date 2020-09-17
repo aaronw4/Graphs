@@ -57,13 +57,20 @@ class Graph:
 
 
     def dft_recursive(self, starting_vertex):
-        """
-        Print each vertex in depth-first order
-        beginning from starting_vertex.
+        visited = []
 
-        This should be done using recursion.
-        """
-        pass  # TODO
+        def helper(vertex):
+            if vertex not in visited:
+                visited.append(vertex)
+                neighbors = self.vertices[vertex]
+                for neighbor in neighbors:
+                    helper(neighbor)
+            else:
+                pass
+        
+        helper(starting_vertex)
+        print(visited)
+       
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -143,7 +150,7 @@ if __name__ == '__main__':
         1, 2, 4, 6, 3, 5, 7
     '''
     graph.dft(1)
-    # graph.dft_recursive(1)
+    graph.dft_recursive(1)
 
     # '''
     # Valid BFS path:
