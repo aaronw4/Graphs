@@ -9,11 +9,14 @@ class Graph:
     def __init__(self):
         self.vertices = {}
 
+
     def add_vertex(self, vertex_id):
         self.vertices[vertex_id] = []
 
+
     def add_edge(self, v1, v2):
         self.vertices[v1].append(v2)
+
 
     def get_neighbors(self, vertex_id):
         """
@@ -22,13 +25,23 @@ class Graph:
         pass  # TODO
 
     def bft(self, starting_vertex):
-        """
-        Print each vertex in breadth-first order
-        beginning from starting_vertex.
-        """
-        pass  # TODO
+        line = Queue()
+        line.enqueue(starting_vertex)
+        visited = []
+        
+        while line.size() > 0:
+            current_node = line.dequeue()
+            if current_node not in visited:
+                visited.append(current_node)
+                neighbors = self.vertices[current_node]
+                for neighbor in neighbors:
+                    line.enqueue(neighbor)
+        
+        print(visited)
+
 
     def dft(self, starting_vertex):
+        line = Stack()
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
@@ -97,22 +110,22 @@ if __name__ == '__main__':
     '''
     print(graph.vertices)
 
-    # '''
-    # Valid BFT paths:
-    #     1, 2, 3, 4, 5, 6, 7
-    #     1, 2, 3, 4, 5, 7, 6
-    #     1, 2, 3, 4, 6, 7, 5
-    #     1, 2, 3, 4, 6, 5, 7
-    #     1, 2, 3, 4, 7, 6, 5
-    #     1, 2, 3, 4, 7, 5, 6
-    #     1, 2, 4, 3, 5, 6, 7
-    #     1, 2, 4, 3, 5, 7, 6
-    #     1, 2, 4, 3, 6, 7, 5
-    #     1, 2, 4, 3, 6, 5, 7
-    #     1, 2, 4, 3, 7, 6, 5
-    #     1, 2, 4, 3, 7, 5, 6
-    # '''
-    # graph.bft(1)
+    '''
+    Valid BFT paths:
+        1, 2, 3, 4, 5, 6, 7
+        1, 2, 3, 4, 5, 7, 6
+        1, 2, 3, 4, 6, 7, 5
+        1, 2, 3, 4, 6, 5, 7
+        1, 2, 3, 4, 7, 6, 5
+        1, 2, 3, 4, 7, 5, 6
+        1, 2, 4, 3, 5, 6, 7
+        1, 2, 4, 3, 5, 7, 6
+        1, 2, 4, 3, 6, 7, 5
+        1, 2, 4, 3, 6, 5, 7
+        1, 2, 4, 3, 7, 6, 5
+        1, 2, 4, 3, 7, 5, 6
+    '''
+    graph.bft(1)
 
     # '''
     # Valid DFT paths:
