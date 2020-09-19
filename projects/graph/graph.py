@@ -114,14 +114,34 @@ class Graph:
 
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing a path from
-        starting_vertex to destination_vertex in
-        depth-first order.
+        visited = []
+        path = [starting_vertex]
+        paths = []
 
-        This should be done using recursion.
-        """
-        pass  # TODO
+        def helper(path):
+            vertex = path[-1]
+
+            if vertex == destination_vertex:
+                paths.append(path)
+            if vertex not in visited:
+                visited.append(vertex)
+                neighbors = self.vertices[vertex]
+                for neighbor in neighbors:
+                    new_path = copy.deepcopy(path)
+                    new_path.append(neighbor)
+                    helper(new_path)
+            else:
+                pass
+        
+        helper(path)
+
+        for x in range(0, len(paths)):
+            shortest = paths[0]
+            if len(paths[x]) < len(shortest):
+                shortest = paths[x]
+                
+        return shortest
+        
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
@@ -189,4 +209,4 @@ if __name__ == '__main__':
         [1, 2, 4, 7, 6]
     '''
     print(graph.dfs(1, 6))
-    # print(graph.dfs_recursive(1, 6))
+    print(graph.dfs_recursive(1, 6))
