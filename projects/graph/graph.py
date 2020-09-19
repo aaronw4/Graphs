@@ -94,12 +94,24 @@ class Graph:
 
 
     def dfs(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing a path from
-        starting_vertex to destination_vertex in
-        depth-first order.
-        """
-        pass  # TODO
+        line = Stack()
+        line.push([starting_vertex])
+        visited = []
+
+        while line.size() > 0:
+            current_path = line.pop()
+            current_node = current_path[-1]
+
+            if current_node == destination_vertex:
+                return current_path
+            if current_node not in visited:
+                visited.append(current_node)
+                neighbors = self.vertices[current_node]
+                for neighbor in neighbors:
+                    one_path = copy.deepcopy(current_path)
+                    one_path.append(neighbor)
+                    line.push(one_path)
+
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
@@ -171,10 +183,10 @@ if __name__ == '__main__':
     '''
     print(graph.bfs(1, 6))
 
-    # '''
-    # Valid DFS paths:
-    #     [1, 2, 4, 6]
-    #     [1, 2, 4, 7, 6]
-    # '''
-    # print(graph.dfs(1, 6))
+    '''
+    Valid DFS paths:
+        [1, 2, 4, 6]
+        [1, 2, 4, 7, 6]
+    '''
+    print(graph.dfs(1, 6))
     # print(graph.dfs_recursive(1, 6))
