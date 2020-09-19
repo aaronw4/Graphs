@@ -12,11 +12,11 @@ class Graph:
 
 
     def add_vertex(self, vertex_id):
-        self.vertices[vertex_id] = []
+        self.vertices[vertex_id] = set()
 
 
     def add_edge(self, v1, v2):
-        self.vertices[v1].append(v2)
+        self.vertices[v1].add(v2)
 
 
     def get_neighbors(self, vertex_id):
@@ -38,7 +38,8 @@ class Graph:
                 for neighbor in neighbors:
                     line.enqueue(neighbor)
         
-        print(visited)
+        for x in range(len(visited)):
+            print(visited[x])
 
 
     def dft(self, starting_vertex):
@@ -54,7 +55,8 @@ class Graph:
                 for neighbor in neighbors:
                     line.push(neighbor)
 
-        print(visited)
+        for x in range(len(visited)):
+            print(visited[x])
 
 
     def dft_recursive(self, starting_vertex):
@@ -70,7 +72,8 @@ class Graph:
                 pass
         
         helper(starting_vertex)
-        print(visited)
+        for x in range(len(visited)):
+            print(visited[x])
        
 
     def bfs(self, starting_vertex, destination_vertex):
@@ -139,7 +142,7 @@ class Graph:
             shortest = paths[0]
             if len(paths[x]) < len(shortest):
                 shortest = paths[x]
-                
+
         return shortest
         
 
