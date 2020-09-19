@@ -76,30 +76,21 @@ class Graph:
     def bfs(self, starting_vertex, destination_vertex):
         line = Queue()
         line.enqueue([starting_vertex])
-        paths = []
         visited = []
 
         while line.size() > 0:
             current_path = line.dequeue()
             current_node = current_path[-1]
 
+            if current_node == destination_vertex:
+                return current_path
             if current_node not in visited:
                 visited.append(current_node)
                 neighbors = self.vertices[current_node]
                 for neighbor in neighbors:
                     one_path = copy.deepcopy(current_path)                 
                     one_path.append(neighbor)
-                    if neighbor == destination_vertex:
-                        paths.append(one_path)
-                    else:
-                        line.enqueue(one_path)
-
-        for x in range(0, len(paths)):
-            shortest = paths[0]
-            if len(paths[x]) < len(shortest):
-                shortest = paths[x]
-
-        return(shortest)
+                    line.enqueue(one_path)
 
 
     def dfs(self, starting_vertex, destination_vertex):
