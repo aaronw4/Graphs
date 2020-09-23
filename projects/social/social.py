@@ -1,3 +1,6 @@
+import random, copy
+from util import Queue
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -43,10 +46,23 @@ class SocialGraph:
         self.users = {}
         self.friendships = {}
         # !!!! IMPLEMENT ME
-
+        
         # Add users
+        for i in range(num_users):
+            self.add_user(i)
 
         # Create friendships
+        all_combinations = []
+
+        for i in range(1, num_users + 1):
+            for j in range(i + 1, num_users + 1):
+                all_combinations.append((i, j))
+
+        random.shuffle(all_combinations)
+
+        for i in range(10):
+            self.add_friendship(all_combinations[i][0], all_combinations[i][1])
+
 
     def get_all_social_paths(self, user_id):
         """
@@ -57,8 +73,31 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
+        line = Queue()
+        line.enqueue([user_id])
+        completed = []
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+
+        while line.size() > 0:
+            user_path = line.dequeue()
+            user = user_path[-1]
+
+            if user in completed:
+                pass
+            else:
+                completed.append(user)
+                friends = self.friendships[user]
+            
+                for i in range(len(friends)):
+                    friend = friends.pop()
+                    if friend in completed:
+                        pass
+                    else:
+                        new_path = copy.deepcopy(user_path)
+                        new_path.append(friend)
+                        visited[friend] = new_path
+                        line.enqueue(new_path)
+
         return visited
 
 
