@@ -13,8 +13,8 @@ world = World()
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "C:/Users/aaron/Git/Graphs/projects/adventure/maps/test_line.txt"
 # map_file = "C:/Users/aaron/Git/Graphs/projects/adventure/maps/test_cross.txt"
-map_file = "C:/Users/aaron/Git/Graphs/projects/adventure/maps/test_loop.txt"
-# map_file = "C:/Users/aaron/Git/Graphs/projects/adventure/maps/test_loop_fork.txt"
+# map_file = "C:/Users/aaron/Git/Graphs/projects/adventure/maps/test_loop.txt"
+map_file = "C:/Users/aaron/Git/Graphs/projects/adventure/maps/test_loop_fork.txt"
 # map_file = "C:/Users/aaron/Git/Graphs/projects/adventure/maps/main_maze.txt"
 
 # Loads the map into a dictionary
@@ -38,10 +38,20 @@ def reverse_direction(direction):
     if direction == 'w':
         return 'e'
 
-def queue_fxn(current_room):
+
+def queue_fxn(current_room, branch):
     current_exits = current_room.get_exits()
+    current_branch = branch
+
     for an_exit in current_exits:
-        main_queue.enqueue((current_room, an_exit))
+        stack_fxn(current_room, an_exit)
+
+    for i in range(0, len(current_branch)):
+        last_direction = current_branch.pop()
+        return_direction = reverse_direction(last_direction)
+        current_room.get_room_in_direction(return_direction)
+        traversal_path.append(return_direction)
+        
 
 def stack_fxn(current_room, current_direction):
     new_stack = Stack()
@@ -63,7 +73,7 @@ def stack_fxn(current_room, current_direction):
         visited.add(room)
 
         if len(new_exits) > 2:
-            queue_fxn(room)
+            queue_fxn(room, branch_path)
         elif len(new_exits) == 1:
             new_direction = new_exits[0]
             new_next_room = room.get_room_in_direction(new_direction)
@@ -110,7 +120,8 @@ while main_queue.size() > 0:
         visited.add(room)
 
         if len(exits) > 2:
-            queue_fxn(room)
+            for an_exit in exits:
+                main_queue.enqueue((room, an_exit))
         elif len(exits) == 1:
             direction = exits[0]
             next_room = room.get_room_in_direction(direction)
