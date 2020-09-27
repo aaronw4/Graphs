@@ -28,6 +28,8 @@ player = Player(world.starting_room)
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
+
+#Helper function
 def reverse_direction(direction):
     if direction == 'n':
         return 's'
@@ -38,7 +40,15 @@ def reverse_direction(direction):
     if direction == 'w':
         return 'e'
 
+#Helper function
+def backtrack(branch, room):
+    for i in range(0, len(branch)):
+        last_direction = branch.pop()
+        return_direction = reverse_direction(last_direction)
+        room.get_room_in_direction(return_direction)
+        traversal_path.append(return_direction)
 
+#Creates a queue that is added to the stack
 def queue_fxn(current_room, branch):
     current_exits = current_room.get_exits()
     current_branch = branch
@@ -46,13 +56,9 @@ def queue_fxn(current_room, branch):
     for an_exit in current_exits:
         stack_fxn(current_room, an_exit)
 
-    for i in range(0, len(current_branch)):
-        last_direction = current_branch.pop()
-        return_direction = reverse_direction(last_direction)
-        current_room.get_room_in_direction(return_direction)
-        traversal_path.append(return_direction)
-        
+    backtrack(current_branch, current_room)
 
+#Creates a stack that is added to the queue
 def stack_fxn(current_room, current_direction):
     new_stack = Stack()
     branch_path = []
@@ -82,18 +88,10 @@ def stack_fxn(current_room, current_direction):
                 main_queue.enqueue(new_next_room)
             else:
                 dead_end = True
-                for i in range(0, len(branch_path)):
-                    last_direction = branch_path.pop()
-                    return_direction = reverse_direction(last_direction)
-                    room.get_room_in_direction(return_direction)
-                    traversal_path.append(return_direction)
+                backtrack(branch_path, room)
         else:
             if room.get_room_in_direction(new_exits[0]) in visited and room.get_room_in_direction(new_exits[1]) in visited:
-                for i in range(0, len(branch_path)):
-                    last_direction = branch_path.pop()
-                    return_direction = reverse_direction(last_direction)
-                    current_room.get_room_in_direction(return_direction)
-                    traversal_path.append(return_direction)
+                backtrack(branch_path, current_room)
             else:
                 for new_possible_exit in new_exits:
                     new_next_room = room.get_room_in_direction(new_possible_exit)
@@ -104,9 +102,9 @@ def stack_fxn(current_room, current_direction):
                     elif new_next_room == start and dead_end is False and len(branch_path) > 2:
                         traversal_path.append(new_possible_exit)
                     else:
-                        pass
-                    
+                        pass           
 
+#Main Function Call
 starting_room = world.starting_room
 
 traversal_path = []
@@ -144,10 +142,6 @@ while main_queue.size() > 0:
                     main_queue.enqueue(next_room)
                 else:
                     pass
-
-
-
-
 
 
 # TRAVERSAL TEST
